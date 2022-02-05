@@ -7,6 +7,7 @@ import com.example.weather.core.appComponent
 import com.example.weather.data.repositoriesImpl.WeatherRepositoryImpl
 import com.example.weather.di.components.AppComponent
 import com.example.weather.domain.repository.WeatherRepository
+import com.example.weather.domain.repository.common.WeatherModel
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity(), MainContact.MainView {
@@ -22,11 +23,11 @@ class MainActivity: AppCompatActivity(), MainContact.MainView {
 
         mPresenter = MainPresenter(this, weatherRepository)
 
-
+        mPresenter?.loadData()
     }
 
-    override fun getWeather() {
-        TODO("Not yet implemented")
+    override fun setupWeather(weatherModel: WeatherModel) {
+
     }
 
 }
