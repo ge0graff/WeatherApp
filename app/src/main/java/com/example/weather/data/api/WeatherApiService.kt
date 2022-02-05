@@ -1,7 +1,7 @@
 package com.example.weather.data.api
 
 import com.example.weather.data.models.Weather
-import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.Response
 
 import retrofit2.http.GET
@@ -13,5 +13,5 @@ interface WeatherApiService {
     @GET("current.json?key=77c98da53a664007806123649222101&aqi=no")
     fun requestWeatherForCity(
         @Query("q") q: String
-    ): Observable<Response<Weather>>
+    ): Single<Response<Weather>>
 }

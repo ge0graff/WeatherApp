@@ -3,6 +3,7 @@ package com.example.weather.di.modules
 import com.example.weather.BuildConfig
 import com.example.weather.data.api.WeatherApiService
 import com.example.weather.data.repositoriesImpl.WeatherRepositoryImpl
+import com.example.weather.domain.repository.WeatherRepository
 import com.example.weather.utils.Constants.Companion.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -15,7 +16,7 @@ import javax.inject.Singleton
 
 
 @Module
-class DataModule {
+class NetworkModule {
 
 
     @Provides
@@ -45,12 +46,7 @@ class DataModule {
         return retrofit.create(WeatherApiService::class.java)
     }
 
-    @Provides
-    @Singleton
-    fun provideWeatherRepositoryImpl(service: WeatherApiService): WeatherRepositoryImpl {
-        return WeatherRepositoryImpl(service)
 
-    }
 
 
 }
