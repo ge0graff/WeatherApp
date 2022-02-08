@@ -12,6 +12,6 @@ interface WeatherApiService {
 
     @GET("current.json?key=77c98da53a664007806123649222101&aqi=no")
     fun requestWeatherForCity(
-        @Query("q") q: String
+        @Query("q") query: String
     ): Single<Response<Weather>>
 }

@@ -5,5 +5,5 @@ import com.example.weather.domain.repository.common.WeatherModel
 
 
 fun Weather.toWeatherModel() = with(this) {
-    WeatherModel(location.name, location.region, current.tempC, current.windKph, current.condition.icon)
+    WeatherModel(location.name, location.region, current.tempC, current.windMph, current.condition.icon)
 }

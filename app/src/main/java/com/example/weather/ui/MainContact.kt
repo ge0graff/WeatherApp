@@ -7,10 +7,14 @@ interface MainContact {
 
     interface MainPresenter {
         fun loadData()
+        fun requestPermission(activity: MainActivity)
     }
 
     interface MainView {
         fun setupWeather(weatherModel: WeatherModel)
+        fun showError()
+        fun showWeather()
+
     }
 
 }

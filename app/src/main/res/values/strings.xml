@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Weather</string>
+
+    <!-- Main Activity-->
+    <string name="main_activity_temp">%1$s \u2103</string>
+    <string name="main_activity_wind">Скорость ветра: %1$s м/с </string>
+    <string name="right">povered by weatherapi.com</string>
+    <string name="no_connection_error">Нет подключения к сети</string>
 </resources>

@@ -1,12 +1,13 @@
 package com.example.weather.domain.repository
 
-import com.example.weather.data.models.Weather
+import android.app.Activity
+import com.example.weather.domain.repository.common.CurrentLocationModel
 import com.example.weather.domain.repository.common.WeatherModel
-import io.reactivex.Observable
+import com.example.weather.ui.MainActivity
 import io.reactivex.Single
-import retrofit2.Response
 
 
 interface WeatherRepository {
-    fun getWeather(q: String): Single<WeatherModel>
+    fun getWeather(query: String): Single<WeatherModel>
+    fun getCurrentLocation(activity: Activity): CurrentLocationModel
 }
