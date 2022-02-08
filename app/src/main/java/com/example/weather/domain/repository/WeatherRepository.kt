@@ -9,5 +9,5 @@ import io.reactivex.Single
 
 interface WeatherRepository {
     fun getWeather(query: String): Single<WeatherModel>
-    fun getCurrentLocation(activity: Activity): CurrentLocationModel
+    fun getCurrentLocation(activity: Activity): Single<CurrentLocationModel>
 }
