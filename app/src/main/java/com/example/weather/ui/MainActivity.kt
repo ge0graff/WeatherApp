@@ -1,4 +1,6 @@
 package com.example.weather.ui
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,6 +11,10 @@ import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.domain.repository.WeatherRepository
 import com.example.weather.domain.repository.common.WeatherModel
 import javax.inject.Inject
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
+
 
 class MainActivity: AppCompatActivity(), MainContact.MainView {
 
@@ -18,6 +24,8 @@ class MainActivity: AppCompatActivity(), MainContact.MainView {
     private var mPresenter: MainContact.MainPresenter? = null
 
     private lateinit var bindingMain: ActivityMainBinding
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +38,7 @@ class MainActivity: AppCompatActivity(), MainContact.MainView {
 
         mPresenter = MainPresenter(this, weatherRepository, this)
 
-        mPresenter?.loadData()
+        mPresenter?.checkNetworkConnection()
 
     }
 
@@ -40,10 +48,7 @@ class MainActivity: AppCompatActivity(), MainContact.MainView {
         bindingMain.updateWeatherButton.setOnClickListener {
             mPresenter?.loadData()
         }
-
-
     }
-
 
     override fun setupWeather(weatherModel: WeatherModel) {
 
@@ -62,12 +67,31 @@ class MainActivity: AppCompatActivity(), MainContact.MainView {
     override fun showWeather() {
         bindingMain.temp.visibility = View.VISIBLE
         bindingMain.wind.visibility = View.VISIBLE
-        bindingMain.errorMsg.visibility = View.GONE
+        bindingMain.errorMsg.visibility = View.INVISIBLE
+    }
+
+    override fun showDialog() {
+        val listener = DialogInterface.OnClickListener { dialog, which ->
+            when(which){
+                DialogInterface.BUTTON_POSITIVE ->
+                {
+                    dialog.dismiss()
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    val uri = Uri.fromParts("package", getPackageName(), null)
+                    intent.data = uri
+                    startActivity(intent)
+                }
+            }
+        }
+        val dialog = AlertDialog.Builder(this)
+            .setCancelable(false)
+            .setMessage(resources.getString(R.string.no_permission))
+            .setPositiveButton("Ок", listener)
+            .create()
+        dialog.show()
     }
 
     override fun showError() {
-        bindingMain.temp.visibility = View.GONE
-        bindingMain.wind.visibility = View.GONE
         bindingMain.errorMsg.visibility = View.VISIBLE
     }
 

@@ -6,4 +6,5 @@
     <string name="main_activity_wind">Скорость ветра: %1$s м/с </string>
     <string name="right">povered by weatherapi.com</string>
     <string name="no_connection_error">Нет подключения к сети</string>
+    <string name="no_permission">Чтобы показать Вам погоду нам нужно знать где вы находитесь</string>
 </resources>

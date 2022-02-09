@@ -4,6 +4,7 @@ import android.app.Activity
 import com.example.weather.domain.repository.common.CurrentLocationModel
 import com.example.weather.domain.repository.common.WeatherModel
 import com.example.weather.ui.MainActivity
+import io.reactivex.Observable
 import io.reactivex.Single
 
 

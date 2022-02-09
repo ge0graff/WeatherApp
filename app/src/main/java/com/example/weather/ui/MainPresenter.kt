@@ -1,15 +1,18 @@
 package com.example.weather.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
 import com.example.weather.domain.NetworkConnect
 import com.example.weather.domain.repository.WeatherRepository
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MainPresenter @Inject constructor(
@@ -22,17 +25,21 @@ class MainPresenter @Inject constructor(
 
 
     override fun loadData() {
-        checkNetworkConnection()
+        Log.d("Test", "repeat")
         disposable.add(
-            weatherRepository.getWeather(weatherRepository.getCurrentLocation(activity).currentLocation)
-                  .subscribeOn(Schedulers.io())
-                  .observeOn(AndroidSchedulers.mainThread())
-                  .subscribe({
-                      mView.showWeather()
-                      mView.setupWeather(it)
-                  }, {
-                      Log.d("Error", it.toString())
-                     })
+            weatherRepository.getCurrentLocation(activity)
+                .flatMap { weatherRepository.getWeather(it.currentLocation).subscribeOn(Schedulers.io()) }
+                .repeatWhen { completed -> completed.delay(30, TimeUnit.SECONDS) }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    Log.d("Test", "Repeat2")
+                    mView.showWeather()
+                    mView.setupWeather(it)
+                }, {
+                    checkNetworkConnection()
+                    Log.d("Test", it.toString())
+                })
                 )
             }
 
@@ -44,14 +51,18 @@ class MainPresenter @Inject constructor(
             when {
                 permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
                     PERMISSION_GRANTED
-
+                    Log.d("Test", "Granted")
+                    loadData()
                 }
                 permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
                     PERMISSION_GRANTED
-
+                    Log.d("Test", "Granted2")
+                    loadData()
                 }
                 else -> {
                     PERMISSION_DENIED
+                    Log.d("Test", "Denied")
+                    mView.showDialog()
                 }
             }
         }
@@ -64,7 +75,7 @@ class MainPresenter @Inject constructor(
         )
     }
 
-    private fun checkNetworkConnection() {
+    override fun checkNetworkConnection() {
 
         val networkConnectManager = NetworkConnect(activity)
 
@@ -75,7 +86,11 @@ class MainPresenter @Inject constructor(
         }
     }
 
+
+
 }
+
+
 
 
 
