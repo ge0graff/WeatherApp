@@ -16,7 +16,7 @@ interface MainContact {
         fun showError()
         fun showWeather()
         fun showDialog()
-
+        fun showApp()
     }
 
 }

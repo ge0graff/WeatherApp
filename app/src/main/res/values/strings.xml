@@ -7,4 +7,6 @@
     <string name="right">povered by weatherapi.com</string>
     <string name="no_connection_error">Нет подключения к сети</string>
     <string name="no_permission">Чтобы показать Вам погоду нам нужно знать где вы находитесь</string>
+    <string name="data_update">Данные обновлены</string>
+    <string name="ok">Ок</string>
 </resources>
