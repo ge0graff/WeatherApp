@@ -1,24 +1,21 @@
-package com.example.weather.data.repositoriesImpl
+package com.example.weather.data.repositories
 
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.util.Log
 import androidx.core.app.ActivityCompat
 import com.example.weather.data.api.WeatherApiService
 import com.example.weather.data.mappers.toWeatherModel
 import com.example.weather.domain.repository.WeatherRepository
-import com.example.weather.domain.repository.common.CurrentLocationModel
-import com.example.weather.domain.repository.common.WeatherModel
+import com.example.weather.domain.entities.CurrentLocationEntities
+import com.example.weather.domain.entities.WeatherModelEntities
 import com.google.android.gms.location.LocationServices
 import io.reactivex.Single
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(private val service: WeatherApiService) :
     WeatherRepository {
-
-    override fun getCurrentLocation(activity: Activity): Single<CurrentLocationModel> {
-
+    override fun getCurrentLocation(activity: Activity): Single<CurrentLocationEntities> {
         return Single.create { emitter ->
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
             if (ActivityCompat.checkSelfPermission(
@@ -34,9 +31,8 @@ class WeatherRepositoryImpl @Inject constructor(private val service: WeatherApiS
                         val latitude = location.latitude.toString()
                         val longitude = location.longitude.toString()
 
-                        emitter.onSuccess(CurrentLocationModel("$latitude,$longitude"))
+                        emitter.onSuccess(CurrentLocationEntities("$latitude,$longitude"))
 
-                        Log.d("Test", "Location = $latitude,$longitude")
                     }
 
             } else {
@@ -46,7 +42,7 @@ class WeatherRepositoryImpl @Inject constructor(private val service: WeatherApiS
         }
     }
 
-    override fun getWeather(query: String): Single<WeatherModel> {
+    override fun getWeather(query: String): Single<WeatherModelEntities> {
         return service.requestWeatherForCity(query)
             .map { it.body()?.toWeatherModel() }
     }

@@ -1,7 +1,6 @@
 package com.example.weather.data.api
 
 import com.example.weather.data.models.Weather
-import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.Response
 

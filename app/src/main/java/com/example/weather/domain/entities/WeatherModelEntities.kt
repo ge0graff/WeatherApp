@@ -1,6 +1,6 @@
-package com.example.weather.domain.repository.common
+package com.example.weather.domain.entities
 
-data class WeatherModel(
+data class WeatherModelEntities(
     val name: String,
     val region: String,
     val tempC: Double,

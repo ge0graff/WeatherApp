@@ -5,7 +5,7 @@ import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
-import com.example.weather.domain.NetworkConnect
+import com.example.weather.common.NetworkConnect
 import com.example.weather.domain.repository.WeatherRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,7 +22,6 @@ class MainPresenter @Inject constructor(
     private val disposable = CompositeDisposable()
 
     override fun loadData() {
-
         disposable.add(
             weatherRepository.getCurrentLocation(activity)
                 .flatMap { weatherRepository.getWeather(it.currentLocation).subscribeOn(Schedulers.io()) }
@@ -30,19 +29,19 @@ class MainPresenter @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    Log.d("Test", "Location23")
                     mView.showApp()
                     mView.showWeather()
                     mView.setupWeather(it)
                 }, {
-                    checkNetworkConnection()
                     mView.showApp()
+                    checkNetworkConnection()
                     Log.d("Test", it.toString())
                 })
                 )
             }
 
     override fun requestPermission(activity: MainActivity) {
-
         val locationPermissionRequest = activity.registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
         ) { permissions ->
@@ -74,7 +73,6 @@ class MainPresenter @Inject constructor(
     }
 
     override fun checkNetworkConnection() {
-
         val networkConnectManager = NetworkConnect(activity)
 
         if (networkConnectManager.isOnline()) {
@@ -83,6 +81,11 @@ class MainPresenter @Inject constructor(
             mView.showError()
         }
     }
+
+    override fun onDestroy() {
+       disposable.dispose()
+    }
+
 
 }
 

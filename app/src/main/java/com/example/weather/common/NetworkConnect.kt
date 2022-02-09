@@ -1,4 +1,4 @@
-package com.example.weather.domain
+package com.example.weather.common
 
 import android.content.Context
 import android.net.ConnectivityManager

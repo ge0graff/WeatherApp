@@ -1,14 +1,12 @@
 package com.example.weather.domain.repository
 
 import android.app.Activity
-import com.example.weather.domain.repository.common.CurrentLocationModel
-import com.example.weather.domain.repository.common.WeatherModel
-import com.example.weather.ui.MainActivity
-import io.reactivex.Observable
+import com.example.weather.domain.entities.CurrentLocationEntities
+import com.example.weather.domain.entities.WeatherModelEntities
 import io.reactivex.Single
 
 
 interface WeatherRepository {
-    fun getWeather(query: String): Single<WeatherModel>
-    fun getCurrentLocation(activity: Activity): Single<CurrentLocationModel>
+    fun getWeather(query: String): Single<WeatherModelEntities>
+    fun getCurrentLocation(activity: Activity): Single<CurrentLocationEntities>
 }

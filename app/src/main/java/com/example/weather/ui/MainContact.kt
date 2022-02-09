@@ -1,6 +1,6 @@
 package com.example.weather.ui
 
-import com.example.weather.domain.repository.common.WeatherModel
+import com.example.weather.domain.entities.WeatherModelEntities
 
 
 interface MainContact {
@@ -9,10 +9,11 @@ interface MainContact {
         fun loadData()
         fun requestPermission(activity: MainActivity)
         fun checkNetworkConnection()
+        fun onDestroy()
     }
 
     interface MainView {
-        fun setupWeather(weatherModel: WeatherModel)
+        fun setupWeather(weatherModel: WeatherModelEntities)
         fun showError()
         fun showWeather()
         fun showDialog()
