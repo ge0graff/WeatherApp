@@ -13,7 +13,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class MainPresenter @Inject constructor(
+class MainPresenter (
     private val mView: MainContact.MainView,
     private val weatherRepository: WeatherRepository,
     private val activity: MainActivity
@@ -29,7 +29,6 @@ class MainPresenter @Inject constructor(
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    Log.d("Test", "Location23")
                     mView.showApp()
                     mView.showWeather()
                     mView.setupWeather(it)
