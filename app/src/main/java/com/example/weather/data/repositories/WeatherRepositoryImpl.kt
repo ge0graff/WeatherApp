@@ -9,12 +9,17 @@ import com.example.weather.data.mappers.toWeatherModel
 import com.example.weather.domain.repository.WeatherRepository
 import com.example.weather.domain.entities.CurrentLocationEntities
 import com.example.weather.domain.entities.WeatherModelEntities
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.tasks.CancellationTokenSource
 import io.reactivex.Single
 import javax.inject.Inject
 
 class WeatherRepositoryImpl @Inject constructor(private val service: WeatherApiService) :
     WeatherRepository {
+
+    private var cancellationTokenSource = CancellationTokenSource()
+
     override fun getCurrentLocation(activity: Activity): Single<CurrentLocationEntities> {
         return Single.create { emitter ->
             val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
@@ -28,11 +33,24 @@ class WeatherRepositoryImpl @Inject constructor(private val service: WeatherApiS
             ) {
                 fusedLocationClient.lastLocation
                     .addOnSuccessListener { location ->
-                        val latitude = location.latitude.toString()
-                        val longitude = location.longitude.toString()
 
-                        emitter.onSuccess(CurrentLocationEntities("$latitude,$longitude"))
+                        if (location != null){
+                            val latitude = location.latitude.toString()
+                            val longitude = location.longitude.toString()
 
+                            emitter.onSuccess(CurrentLocationEntities("$latitude,$longitude"))
+                        } else {
+                            fusedLocationClient.getCurrentLocation(
+                                LocationRequest.PRIORITY_HIGH_ACCURACY,
+                                cancellationTokenSource.token
+                            )
+                                .addOnSuccessListener { location ->
+                                    val latitude = location.latitude.toString()
+                                    val longitude = location.longitude.toString()
+
+                                    emitter.onSuccess(CurrentLocationEntities("$latitude,$longitude"))
+                                }
+                        }
                     }
 
             } else {
